@@ -1,0 +1,10 @@
+early_stopping: False
+
+temperature: 1.0
+length_penalty: 1.0
+
+# TODO: Pack as "other parameters" that concern the generation
+seed: ${seed}
+
+save_testing_data: True
+# TODO: Add support for more then one ds

@@ -1,0 +1,62 @@
+_target_: discrete_bottleneck.datamodule.grid_datamodule.GridDataModule
+
+seed: ${seed}
+#data_dir: null # not used for this dataset since the dataset is generated
+
+num_rows: 2
+num_cols: 3
+num_object_classes: 2
+min_num_objects_to_place: 0
+max_num_objects_to_place: ${mult_int:${datamodule.num_rows},${datamodule.num_cols}}
+
+batch_size: 128
+num_workers: 24
+
+dataset_parameters:
+  train:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.VariableElementCountGridDataset
+      split: "train"
+      seed: ${datamodule.seed}
+      num_samples: 10000
+      num_rows: ${datamodule.num_rows}
+      num_cols: ${datamodule.num_cols}
+      num_object_classes: ${datamodule.num_object_classes}
+      min_num_objects_to_place: ${datamodule.min_num_objects_to_place}
+      max_num_objects_to_place: ${datamodule.max_num_objects_to_place}
+
+    dataloader:
+      batch_size: ${datamodule.batch_size}
+      num_workers: ${datamodule.num_workers}
+
+  val:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.VariableElementCountGridDataset
+      split: "val"
+      seed: ${datamodule.seed}
+      num_samples: 500
+      num_rows: ${datamodule.num_rows}
+      num_cols: ${datamodule.num_cols}
+      num_object_classes: ${datamodule.num_object_classes}
+      min_num_objects_to_place: ${datamodule.min_num_objects_to_place}
+      max_num_objects_to_place: ${datamodule.max_num_objects_to_place}
+
+    dataloader:
+      batch_size: ${datamodule.batch_size}
+      num_workers: ${datamodule.num_workers}
+
+  test:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.VariableElementCountGridDataset
+      split: "test"
+      seed: ${datamodule.seed}
+      num_samples: 500
+      num_rows: ${datamodule.num_rows}
+      num_cols: ${datamodule.num_cols}
+      num_object_classes: ${datamodule.num_object_classes}
+      min_num_objects_to_place: ${datamodule.min_num_objects_to_place}
+      max_num_objects_to_place: ${datamodule.max_num_objects_to_place}
+
+    dataloader:
+      batch_size: ${datamodule.batch_size}
+      num_workers: ${datamodule.num_workers}

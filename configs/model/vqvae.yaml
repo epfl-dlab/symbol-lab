@@ -1,0 +1,54 @@
+defaults:
+  - inference: default
+
+_target_: discrete_bottleneck.models.vqvae_pl.VQVAEPl
+
+name: 'vqvae'
+# TODO (p_low: To move to trainer/optimizer and link them
+# TODO (p_low): Make recursive instantiation of optimizer and scheduler
+# --- Learning rates and Schedulers ---
+
+lr: 0.001 # 3e-05
+weight_decay: 0.00
+schedule_name: "reduce_lr_on_plateau" # "polynomial" # or linear
+lr_end: 0.0
+
+warmup_updates: 500
+#total_num_updates: ${trainer.max_steps}
+# total_num_updates: 200000
+
+# --- Optimizer ---
+#adam_betas: (0.9, 0.999)
+adam_eps: 1e-08
+# ------------
+
+
+# --- VQ-VAE Model ---
+vocab_size: 4 # It should be 2+len(vocab) because we have BOS, EOS in the voacb
+input_dim: ${.vocab_size}
+output_dim: ${.vocab_size}
+d_embedding: 64 # 32
+num_embeddings: 512 # VQ-VAE has a codebook, num_embedding defines the number of those codes
+enc_emb_dim: ${.d_embedding}
+dec_emb_dim: ${.d_embedding}
+hid_dim: 512 # 64
+n_layers: 4 # 2
+dropout: &dropout 0.5
+enc_dropout: 0.5 # 0.5
+dec_dropout: 0.5 # 0.5
+
+beta: 0.25
+encoder_params: 
+    input_dim: ${model.vocab_size}
+    emb_dim: ${model.d_embedding}
+    hid_dim: ${model.hid_dim}
+    n_layers: ${model.n_layers}
+    dropout: ${model.dropout}
+decoder_params: 
+    output_dim: ${model.vocab_size}
+    emb_dim: ${model.d_embedding}
+    hid_dim: ${model.hid_dim}
+    n_layers: ${model.n_layers}
+    dropout: ${model.dropout}
+
+

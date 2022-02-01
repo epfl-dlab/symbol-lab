@@ -1,0 +1,151 @@
+_target_: discrete_bottleneck.datamodule.controlled_decoder_datamodule.ControlledDecoderDataModule
+
+seed: ${seed}
+#data_dir: null # not used for this dataset since the dataset is generated
+
+dataset_parameters:
+  train:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.controlled_decoder_datasets.ControlledDecoderDataset
+      split: "train"
+      seed: ${datamodule.seed}
+      num_samples: 1000
+      
+      decoder_parameters:
+          deterministic: False
+          invertible: False
+          sequence_output: False # This might be unnecessary given output_length
+          output_length: 3
+          non_invertible_percentage: 0.3
+          non_invertibility_maximum_degree: 3
+          
+          dist_params:
+              name: 'uniform'
+              uniform:
+                  positive_dist:
+                      low: 0.5
+                      high: 1.0
+                  negative_dist:
+                      low: -1.0
+                      high: -0.5
+              normal:
+                  positive_dist:
+                      mu: 1.0
+                      std: 1.0
+                  negative_dist:
+                      mu: 0.0,
+                      std: 1.0
+              bernoulli:
+                  # note that p in positive and negative should sum to 1. Modify them accordingly.
+                  positive_dist:
+                      n: 1
+                      p: 0.8
+                  negative_dist:
+                      n: 1
+                      p: 0.2
+              
+      
+      discrete_bottleneck_parameters:
+          sequence_length: 2
+          num_possible_values: 2
+          
+    dataloader:
+      batch_size: 128
+      num_workers: 24
+
+  val:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.controlled_decoder_datasets.ControlledDecoderDataset
+      split: "val"
+      seed: ${datamodule.seed}
+      num_samples: 500
+      
+      decoder_parameters:
+          deterministic: False
+          invertible: False
+          sequence_output: False # This might be unnecessary given output_length
+          output_length: 3
+          non_invertible_percentage: 0.3
+          non_invertibility_maximum_degree: 3
+          
+          dist_params:
+              name: 'uniform'
+              uniform:
+                  positive_dist:
+                      low: 0.5
+                      high: 1.0
+                  negative_dist:
+                      low: -1.0
+                      high: -0.5
+              normal:
+                  positive_dist:
+                      mu: 1.0
+                      std: 1.0
+                  negative_dist:
+                      mu: 0.0,
+                      std: 1.0
+              bernoulli:
+                  # note that p in positive and negative should sum to 1. Modify them accordingly.
+                  positive_dist:
+                      n: 1
+                      p: 0.8
+                  negative_dist:
+                      n: 1
+                      p: 0.2
+              
+      
+      discrete_bottleneck_parameters:
+          sequence_length: 2
+          num_possible_values: 2
+    dataloader:
+      batch_size: 128
+      num_workers: 24
+
+  test:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.controlled_decoder_datasets.ControlledDecoderDataset
+      split: "test"
+      seed: ${datamodule.seed}
+      num_samples: 200
+      
+      decoder_parameters:
+          deterministic: False
+          invertible: False
+          sequence_output: False # This might be unnecessary given output_length
+          output_length: 3
+          non_invertible_percentage: 0.3
+          non_invertibility_maximum_degree: 3
+          
+          dist_params:
+              name: 'uniform'
+              uniform:
+                  positive_dist:
+                      low: 0.5
+                      high: 1.0
+                  negative_dist:
+                      low: -1.0
+                      high: -0.5
+              normal:
+                  positive_dist:
+                      mu: 1.0
+                      std: 1.0
+                  negative_dist:
+                      mu: 0.0,
+                      std: 1.0
+              bernoulli:
+                  # note that p in positive and negative should sum to 1. Modify them accordingly.
+                  positive_dist:
+                      n: 1
+                      p: 0.8
+                  negative_dist:
+                      n: 1
+                      p: 0.2
+              
+      
+      discrete_bottleneck_parameters:
+          sequence_length: 2
+          num_possible_values: 2
+
+    dataloader:
+      batch_size: 128
+      num_workers: 24

@@ -1,0 +1,58 @@
+defaults:
+  - inference: default
+  - tokenizer: simple_tokenizer
+  - collator: default_collator
+
+_target_: discrete_bottleneck.models.seq2seq_pl.Seq2SeqPl
+
+nn_params:
+  name: "seq2seq"
+  # TODO (p_low): To move optimization params trainer/optimizer and link them
+  # TODO (p_low): Make recursive instantiation of optimizer and scheduler
+  # --- Learning rates and Schedulers ---
+
+  lr: 0.001 # 3e-05
+  weight_decay: 0.01
+  schedule_name: "polynomial" # or linear
+  lr_end: 0.0
+
+  warmup_updates: 500
+  #total_num_updates: ${trainer.max_steps}
+  total_num_updates: 200000
+
+  # ------------
+
+  # --- Loss ---
+  eps: 0.1
+  # ------------
+
+  # --- Optimizer ---
+  #adam_betas: (0.9, 0.999)
+  adam_eps: 1e-08
+  # ------------
+
+  # --- Seq2Seq Model ---
+  vocab_size: 4 # It should be 2+len(vocab) because we have BOS, EOS in the voacb
+  input_dim: ${model.nn_params.vocab_size}
+  output_dim: ${model.nn_params.vocab_size}
+  d_embedding: 32 # 64
+  enc_emb_dim: ${model.nn_params.d_embedding}
+  dec_emb_dim: ${model.nn_params.d_embedding}
+  hid_dim: 64 # 512
+  n_layers: 2 # 2
+  enc_dropout: 0.5 # 0.5
+  dec_dropout: 0.5 # 0.5
+
+  encoder_params:
+    input_dim: ${model.nn_params.vocab_size}
+    emb_dim: ${model.nn_params.enc_emb_dim}
+    hid_dim: ${model.nn_params.hid_dim}
+    n_layers: ${model.nn_params.n_layers}
+    dropout: ${model.nn_params.enc_dropout}
+  decoder_params:
+    output_dim: ${model.nn_params.vocab_size}
+    emb_dim: ${model.nn_params.dec_emb_dim}
+    hid_dim: ${model.nn_params.hid_dim}
+    n_layers: ${model.nn_params.n_layers}
+    dropout: ${model.nn_params.dec_dropout}
+  # ------------

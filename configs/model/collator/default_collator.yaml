@@ -1,0 +1,5 @@
+_target_: discrete_bottleneck.models.collators.DefaultCollator
+max_input_length: null
+max_output_length: null
+padding: True
+pad_id: null

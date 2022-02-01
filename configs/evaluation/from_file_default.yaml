@@ -1,0 +1,65 @@
+# @package _global_
+
+# to execute this evaluation run:
+# python run.py evaluation=from_file_default.yaml
+
+defaults:
+  - override /logger:
+      - csv
+      - wandb
+  - override /trainer: null
+  - override /model: null
+  - override /datamodule: null
+  - override /callbacks: null # set this to null if you don't want to use callbacks
+  - override /experiment: null
+  - override /hparams_search: null
+  - _self_
+
+run_name: ??? # Will be used for logging
+
+getter:
+  _target_: discrete_bottleneck.utils.evaluation.Default
+  path: "/home/martin_vm/GENIE/logs/runs/2021-10-03-23-45-51---real__100/testing_output.jsonl"
+
+# metrics:
+#   precision:
+#     _target_: genie.metrics.triplet_set_precision.TSPrecision
+#   recall:
+#     _target_: genie.metrics.triplet_set_recall.TSRecall
+#   f1:
+#     _target_: genie.metrics.triplet_set_f1.TSF1
+
+# To update some options for the logger
+#logger:
+#  wandb:
+#    tags: ["tag1", "tag2"]
+#    notes: "Description of this model."
+#  csv:
+#    save_dir: "." # current default
+
+mode: "evaluation_from_file" # train, evaluation, evaluation_from_file
+
+# path to original working directory
+work_dir: ${hydra:runtime.cwd}
+
+# path to folder with data
+data_dir: ${work_dir}/data/
+
+# use `python run.py debug=true` for easy debugging!
+# this will run 1 train, val and test loop with only 1 batch
+# equivalent to running `python run.py trainer.fast_dev_run=true`
+# (this is placed here just for easier access from command line)
+debug: null
+debug_ckpt_path: null
+
+# pretty print config at the start of the run using Rich library
+print_config: True
+
+# disable python warnings if they annoy you
+ignore_warnings: False
+
+# check performance on test set, using the best model achieved during training
+# lightning chooses best model based on metric specified in checkpoint callback
+test_after_training: null
+
+seed: 123

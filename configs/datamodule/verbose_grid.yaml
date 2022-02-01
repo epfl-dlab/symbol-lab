@@ -1,0 +1,50 @@
+_target_: discrete_bottleneck.datamodule.grid_datamodule.GridDataModule
+
+seed: ${seed}
+#data_dir: null # not used for this dataset since the dataset is generated
+
+dataset_parameters:
+  train:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.ConstantGridDataset
+      split: "train"
+      seed: ${datamodule.seed}
+      num_samples: 2
+      num_rows: 2
+      num_cols: 5
+      num_object_classes: 3
+      num_objects_to_place: 3
+
+    dataloader:
+      batch_size: 128
+      num_workers: 24
+
+  val:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.ConstantGridDataset
+      split: "val"
+      seed: ${datamodule.seed}
+      num_samples: 5
+      num_rows: 2
+      num_cols: 5
+      num_object_classes: 3
+      num_objects_to_place: 3
+
+    dataloader:
+      batch_size: 128
+      num_workers: 24
+
+  test:
+    dataset:
+      _target_: discrete_bottleneck.datamodule.grid_datasets.ConstantGridDataset
+      split: "test"
+      seed: ${datamodule.seed}
+      num_samples: 3
+      num_rows: 2
+      num_cols: 5
+      num_object_classes: 3
+      num_objects_to_place: 3
+
+    dataloader:
+      batch_size: 128
+      num_workers: 24

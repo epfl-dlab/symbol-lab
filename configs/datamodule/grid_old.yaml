@@ -1,0 +1,52 @@
+_target_: discrete_bottleneck.datamodule.datasets_pl.DataModule
+
+dataset_name: "grid"
+data_dir: ${data_dir}${datamodule.dataset_name}
+
+seed: ${seed}
+
+
+row: 1
+col: 2
+num_objects: 1
+vocab: ['empty', 'circle']
+# VOCAB = ['empty', 'circle', 'triangle', 'square']
+# VOCAB = ['empty', 'circle', 'triangle', 'square', 'r-', 'g-', 'b-']
+
+
+# Concerning the data_loaders
+batch_size: &bs 128
+num_workers: 24
+pin_memory: False
+
+dataset:
+    train_split:
+        n_samples: 10000
+        batch_size: ${datamodule.batch_size}
+        num_workers: ${datamodule.num_workers}
+        row: ${datamodule.row}
+        col: ${datamodule.col}
+        num_objects: ${datamodule.num_objects}
+        vocab: ${datamodule.vocab}
+#         shuffle: True
+#         drop_last: True
+    valid_split:
+        n_samples: 500
+        batch_size: ${datamodule.batch_size}
+        num_workers: ${datamodule.num_workers}
+        row: ${datamodule.row}
+        col: ${datamodule.col}
+        num_objects: ${datamodule.num_objects}
+        vocab: ${datamodule.vocab}
+#         shuffle: False
+#         drop_last: True
+    test_split:
+        n_samples: 500
+        batch_size: ${datamodule.batch_size}
+        num_workers: ${datamodule.num_workers}
+        row: ${datamodule.row}
+        col: ${datamodule.col}
+        num_objects: ${datamodule.num_objects}
+        vocab: ${datamodule.vocab}
+#         shuffle: False
+#         drop_last: True
